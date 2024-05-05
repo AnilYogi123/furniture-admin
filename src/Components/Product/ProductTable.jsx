@@ -16,7 +16,6 @@ const ProductTable = ({editData}) => {
     const [openEditProduct, setOpenEditProduct] = useState(false)
     const {register,reset,handleSubmit} = useForm()
     const [selectedImage,setSelectedImage] = useState()
-    console.log("selectedImage",selectedImage)
     const navigate = useNavigate()
     const productMutation = useProductMutation()
 
@@ -73,6 +72,7 @@ const ProductTable = ({editData}) => {
     const {data,isLoading,isError} =useProductData()
 
     console.log("data",data)
+    const filterData = data?.data?.filter((item)=>!item?.isRohan)
     return (
         <div className="bg-white px-4 pt-3 pb-4 rounded-sm border border-gray-200 flex-1">
             <div className='flex justify-between'>
@@ -91,11 +91,11 @@ const ProductTable = ({editData}) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.data?.map((user) => 
+                        {filterData?.map((user) => 
                             {console.log("user",user)
                                  return <tr key={user?.id} className='border-b h-8'>
                                 <td className='text-center'>{user?.name}</td>
-                                <td className='text-center'>{user?.description}</td>
+                                <td className='text-center'>{user?.description?.slice(0,50)}</td>
                                 <td className='text-center'>{user?.brand}</td>
                                 <td className='text-center'>Rs {user?.price}</td>
                                 <td className='justify-center flex gap-2 mt-1'>
@@ -121,10 +121,10 @@ const ProductTable = ({editData}) => {
                             </div>
                             <div className='flex gap-6'>
                                 <Input  register={register} registerName={"price"} label='Product Price' type='number' />
-                                <Input  register={register} registerName={"discount"} label='Discount' type='text' />
+                                <Input  register={register} registerName={"discount"} label='Discount' type='number' />
                             </div>  
                             <div className='flex gap-6'>
-                                <Input  register={register} registerName={"category"} label='Category' type='number' />
+                                <Input  register={register} registerName={"category"} label='Category' type='text' />
                                 <Input  register={register} registerName={"brand"} label='Brand' type='text' />
                             </div>
                             <label className='text-sm font-normal text-[#596579]'>Image</label>
